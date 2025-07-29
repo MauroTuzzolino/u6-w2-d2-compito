@@ -5,12 +5,14 @@ import maurotuzzolino.u6_w2_d1_compito.entities.Dipendente;
 import maurotuzzolino.u6_w2_d1_compito.payloads.DipendentePayload;
 import maurotuzzolino.u6_w2_d1_compito.services.DipendenteService;
 import maurotuzzolino.u6_w2_d1_compito.services.ImageService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -21,8 +23,9 @@ import java.io.IOException;
 public class DipendenteController {
 
     private final DipendenteService dipendenteService;
-
     private final ImageService imageService;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     public DipendenteController(DipendenteService dipendenteService, ImageService imageService) {
         this.dipendenteService = dipendenteService;
@@ -49,13 +52,14 @@ public class DipendenteController {
     @PostMapping
     @PreAuthorize("hasAuthority('AMMINISTRATORE')")
     public ResponseEntity<Dipendente> create(@RequestBody @Valid DipendentePayload payload) {
+        String hashedPassword = passwordEncoder.encode(payload.getPassword());
         Dipendente dip = new Dipendente(
                 payload.getUsername(),
                 payload.getNome(),
                 payload.getCognome(),
                 payload.getRuolo(),
                 payload.getEmail(),
-                payload.getPassword(),
+                hashedPassword,
                 payload.getImmagineProfilo()
         );
         return ResponseEntity.ok(dipendenteService.create(dip));
@@ -64,13 +68,14 @@ public class DipendenteController {
     @PutMapping("/{id}")
     @PreAuthorize("hasAuthority('AMMINISTRATORE') or #id == authentication.principal.id")
     public ResponseEntity<Dipendente> update(@PathVariable Long id, @RequestBody @Valid DipendentePayload payload) {
+        String hashedPassword = passwordEncoder.encode(payload.getPassword());
         Dipendente dip = new Dipendente(
                 payload.getUsername(),
                 payload.getNome(),
                 payload.getCognome(),
                 payload.getRuolo(),
                 payload.getEmail(),
-                payload.getPassword(),
+                hashedPassword,
                 payload.getImmagineProfilo()
         );
         return ResponseEntity.ok(dipendenteService.update(id, dip));

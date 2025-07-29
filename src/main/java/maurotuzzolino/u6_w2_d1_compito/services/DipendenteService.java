@@ -4,14 +4,18 @@ import maurotuzzolino.u6_w2_d1_compito.entities.Dipendente;
 import maurotuzzolino.u6_w2_d1_compito.exceptions.NotFoundException;
 import maurotuzzolino.u6_w2_d1_compito.payloads.NewDipendenteRequest;
 import maurotuzzolino.u6_w2_d1_compito.repositories.DipendenteRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
 public class DipendenteService {
 
     private final DipendenteRepository dipendenteRepository;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     public DipendenteService(DipendenteRepository dipendenteRepository) {
         this.dipendenteRepository = dipendenteRepository;
@@ -55,7 +59,7 @@ public class DipendenteService {
     public Dipendente save(NewDipendenteRequest body) {
         Dipendente nuovo = new Dipendente(body.getUsername(), body.getNome(), body.getCognome(), body.getRuolo(), body.getEmail(), body.getPassword(), body.getImmagineProfilo());
         nuovo.setEmail(body.getEmail());
-        nuovo.setPassword(body.getPassword());
+        nuovo.setPassword(passwordEncoder.encode(body.getPassword()));
 
         return dipendenteRepository.save(nuovo);
     }
