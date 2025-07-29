@@ -12,6 +12,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -97,5 +98,11 @@ public class DipendenteController {
         dipendente.setImmagineProfilo(imageUrl);
         dipendenteService.update(id, dipendente);
         return ResponseEntity.ok(imageUrl);
+    }
+
+    @GetMapping("/me")
+    @PreAuthorize("hasAnyAuthority('AMMINISTRATORE', 'DIPENDENTE_SEMPLICE')")
+    public Dipendente personalProfile(@AuthenticationPrincipal Dipendente currentDipendente) {
+        return currentDipendente;
     }
 }

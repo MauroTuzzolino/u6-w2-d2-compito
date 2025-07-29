@@ -15,7 +15,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
-import java.util.Collections;
 
 @Component
 public class JWTCheckerFilter extends OncePerRequestFilter {
@@ -51,7 +50,7 @@ public class JWTCheckerFilter extends OncePerRequestFilter {
 
         // 7. Creo l'autenticazione e la inserisco nel contesto
         UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
-                dipendente, null, Collections.emptyList()
+                dipendente, null, dipendente.getAuthorities()
         );
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
