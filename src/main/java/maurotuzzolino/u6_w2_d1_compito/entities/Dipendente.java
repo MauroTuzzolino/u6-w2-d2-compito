@@ -5,10 +5,16 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import maurotuzzolino.u6_w2_d1_compito.enums.RuoloDipendente;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
+import java.util.Collection;
+import java.util.List;
 
 @Entity
 @Table(name = "dipendenti")
-public class Dipendente {
+public class Dipendente implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,6 +36,7 @@ public class Dipendente {
     private String cognome;
 
     @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
     private RuoloDipendente ruolo;
 
     @NotBlank
@@ -89,6 +96,14 @@ public class Dipendente {
         this.cognome = cognome;
     }
 
+    public RuoloDipendente getRuolo() {
+        return ruolo;
+    }
+
+    public void setRuolo(RuoloDipendente ruolo) {
+        this.ruolo = ruolo;
+    }
+
     public String getEmail() {
         return email;
     }
@@ -113,12 +128,9 @@ public class Dipendente {
         this.password = password;
     }
 
-    public RuoloDipendente getRuolo() {
-        return ruolo;
-    }
-
-    public void setRuolo(RuoloDipendente ruolo) {
-        this.ruolo = ruolo;
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return List.of(new SimpleGrantedAuthority(this.ruolo.name()));
     }
 
     @Override

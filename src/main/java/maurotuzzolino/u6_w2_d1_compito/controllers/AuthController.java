@@ -7,6 +7,7 @@ import maurotuzzolino.u6_w2_d1_compito.services.AuthService;
 import maurotuzzolino.u6_w2_d1_compito.services.DipendenteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -28,6 +29,7 @@ public class AuthController {
     }
 
     @PostMapping("/register")
+    @PreAuthorize("hasAuthority('AMMINISTRATORE')")
     @ResponseStatus(HttpStatus.CREATED)
     public NewDipendenteResponse register(@RequestBody @Validated NewDipendenteRequest body) {
         Dipendente nuovo = dipendenteService.save(body);
@@ -35,6 +37,7 @@ public class AuthController {
     }
 
     @GetMapping("/me")
+    @PreAuthorize("hasAnyAuthority('AMMINISTRATORE', 'DIPENDENTE_SEMPLICE')")
     public CurrentDipendenteResponse getCurrentUser(Authentication authentication) {
         Dipendente current = (Dipendente) authentication.getPrincipal();
         return new CurrentDipendenteResponse(current.getId(), current.getEmail(), current.getUsername());

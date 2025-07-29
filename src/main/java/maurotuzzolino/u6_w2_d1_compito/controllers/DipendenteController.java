@@ -10,6 +10,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -29,6 +30,7 @@ public class DipendenteController {
     }
 
     @GetMapping
+    @PreAuthorize("hasAuthority('AMMINISTRATORE')")
     public ResponseEntity<Page<Dipendente>> getAll(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size,
@@ -39,11 +41,13 @@ public class DipendenteController {
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasAuthority('AMMINISTRATORE')")
     public Dipendente getById(@PathVariable Long id) {
         return dipendenteService.getById(id);
     }
 
     @PostMapping
+    @PreAuthorize("hasAuthority('AMMINISTRATORE')")
     public ResponseEntity<Dipendente> create(@RequestBody @Valid DipendentePayload payload) {
         Dipendente dip = new Dipendente(
                 payload.getUsername(),
@@ -58,6 +62,7 @@ public class DipendenteController {
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasAuthority('AMMINISTRATORE') or #id == authentication.principal.id")
     public ResponseEntity<Dipendente> update(@PathVariable Long id, @RequestBody @Valid DipendentePayload payload) {
         Dipendente dip = new Dipendente(
                 payload.getUsername(),
@@ -72,12 +77,14 @@ public class DipendenteController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAuthority('AMMINISTRATORE')")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         dipendenteService.delete(id);
         return ResponseEntity.noContent().build();
     }
 
     @PatchMapping("/{id}/upload")
+    @PreAuthorize("hasAuthority('AMMINISTRATORE') or #id == authentication.principal.id")
     public ResponseEntity<String> uploadImmagineProfilo(@PathVariable Long id,
                                                         @RequestParam("file") MultipartFile file) throws IOException {
         Dipendente dipendente = dipendenteService.getById(id);
