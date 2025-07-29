@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
+import maurotuzzolino.u6_w2_d1_compito.enums.RuoloDipendente;
 
 @Entity
 @Table(name = "dipendenti")
@@ -28,6 +29,9 @@ public class Dipendente {
     @Column(nullable = false)
     private String cognome;
 
+    @Enumerated(EnumType.STRING)
+    private RuoloDipendente ruolo;
+
     @NotBlank
     @Email
     @Size(max = 150)
@@ -43,10 +47,11 @@ public class Dipendente {
     public Dipendente() {
     }
 
-    public Dipendente(String username, String nome, String cognome, String email, String password, String immagineProfilo) {
+    public Dipendente(String username, String nome, String cognome, RuoloDipendente ruolo, String email, String password, String immagineProfilo) {
         this.username = username;
         this.nome = nome;
         this.cognome = cognome;
+        this.ruolo = ruolo;
         this.email = email;
         this.password = password;
         this.immagineProfilo = immagineProfilo;
@@ -108,6 +113,14 @@ public class Dipendente {
         this.password = password;
     }
 
+    public RuoloDipendente getRuolo() {
+        return ruolo;
+    }
+
+    public void setRuolo(RuoloDipendente ruolo) {
+        this.ruolo = ruolo;
+    }
+
     @Override
     public String toString() {
         return "Dipendente{" +
@@ -115,6 +128,7 @@ public class Dipendente {
                 ", username='" + username + '\'' +
                 ", nome='" + nome + '\'' +
                 ", cognome='" + cognome + '\'' +
+                ", ruolo=" + ruolo +
                 ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
                 ", immagineProfilo='" + immagineProfilo + '\'' +

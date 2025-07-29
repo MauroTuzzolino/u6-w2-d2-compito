@@ -8,10 +8,14 @@ import maurotuzzolino.u6_w2_d1_compito.repositories.DipendenteRepository;
 import maurotuzzolino.u6_w2_d1_compito.repositories.PrenotazioneRepository;
 import maurotuzzolino.u6_w2_d1_compito.repositories.ViaggioRepository;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
 
-//@Component
+import static maurotuzzolino.u6_w2_d1_compito.enums.RuoloDipendente.AMMINISTRATORE;
+import static maurotuzzolino.u6_w2_d1_compito.enums.RuoloDipendente.DIPENDENTE_SEMPLICE;
+
+@Component
 public class DatabaseSeeder implements CommandLineRunner {
 
     private final DipendenteRepository dipendenteRepository;
@@ -30,9 +34,9 @@ public class DatabaseSeeder implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
         // Dipendenti
-        Dipendente mario = new Dipendente("m.rossi", "Mario", "Rossi", "mario.rossi@email.com", "password123", null);
-        Dipendente giulia = new Dipendente("g.bianchi", "Giulia", "Bianchi", "giulia.bianchi@email.com", "password456", null);
-        Dipendente luigi = new Dipendente("l.verdi", "Luigi", "Verdi", "luigi.verdi@email.com", "password789", null);
+        Dipendente mario = new Dipendente("m.rossi", "Mario", "Rossi", AMMINISTRATORE, "mario.rossi@email.com", "password123", null);
+        Dipendente giulia = new Dipendente("g.bianchi", "Giulia", "Bianchi", DIPENDENTE_SEMPLICE, "giulia.bianchi@email.com", "password456", null);
+        Dipendente luigi = new Dipendente("l.verdi", "Luigi", "Verdi", DIPENDENTE_SEMPLICE, "luigi.verdi@email.com", "password789", null);
 
         dipendenteRepository.save(mario);
         dipendenteRepository.save(giulia);

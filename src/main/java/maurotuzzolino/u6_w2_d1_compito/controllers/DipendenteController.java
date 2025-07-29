@@ -49,6 +49,7 @@ public class DipendenteController {
                 payload.getUsername(),
                 payload.getNome(),
                 payload.getCognome(),
+                payload.getRuolo(),
                 payload.getEmail(),
                 payload.getPassword(),
                 payload.getImmagineProfilo()
@@ -62,6 +63,7 @@ public class DipendenteController {
                 payload.getUsername(),
                 payload.getNome(),
                 payload.getCognome(),
+                payload.getRuolo(),
                 payload.getEmail(),
                 payload.getPassword(),
                 payload.getImmagineProfilo()

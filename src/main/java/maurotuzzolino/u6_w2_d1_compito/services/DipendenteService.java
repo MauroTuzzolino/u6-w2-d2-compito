@@ -53,7 +53,7 @@ public class DipendenteService {
     }
 
     public Dipendente save(NewDipendenteRequest body) {
-        Dipendente nuovo = new Dipendente(body.getUsername(), body.getNome(), body.getCognome(), body.getEmail(), body.getPassword(), body.getImmagineProfilo());
+        Dipendente nuovo = new Dipendente(body.getUsername(), body.getNome(), body.getCognome(), body.getRuolo(), body.getEmail(), body.getPassword(), body.getImmagineProfilo());
         nuovo.setEmail(body.getEmail());
         nuovo.setPassword(body.getPassword());
 

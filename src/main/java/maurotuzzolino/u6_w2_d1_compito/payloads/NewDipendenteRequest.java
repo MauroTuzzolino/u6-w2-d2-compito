@@ -1,7 +1,10 @@
 package maurotuzzolino.u6_w2_d1_compito.payloads;
 
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import maurotuzzolino.u6_w2_d1_compito.enums.RuoloDipendente;
 
 public class NewDipendenteRequest {
     @NotBlank
@@ -12,6 +15,9 @@ public class NewDipendenteRequest {
 
     @NotBlank
     private String cognome;
+
+    @Enumerated(EnumType.STRING)
+    private RuoloDipendente ruolo;
 
     @Email
     @NotBlank
@@ -69,5 +75,13 @@ public class NewDipendenteRequest {
 
     public void setImmagineProfilo(String immagineProfilo) {
         this.immagineProfilo = immagineProfilo;
+    }
+
+    public RuoloDipendente getRuolo() {
+        return ruolo;
+    }
+
+    public void setRuolo(RuoloDipendente ruolo) {
+        this.ruolo = ruolo;
     }
 }

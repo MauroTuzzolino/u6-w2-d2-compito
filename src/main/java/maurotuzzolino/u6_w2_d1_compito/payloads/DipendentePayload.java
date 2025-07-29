@@ -1,8 +1,11 @@
 package maurotuzzolino.u6_w2_d1_compito.payloads;
 
 import jakarta.persistence.Column;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import maurotuzzolino.u6_w2_d1_compito.enums.RuoloDipendente;
 
 public class DipendentePayload {
     @NotBlank
@@ -14,6 +17,9 @@ public class DipendentePayload {
     @NotBlank
     private String cognome;
 
+    @Enumerated(EnumType.STRING)
+    private RuoloDipendente ruolo;
+
     @NotBlank
     @Email
     private String email;
@@ -24,10 +30,11 @@ public class DipendentePayload {
 
     private String immagineProfilo;
 
-    public DipendentePayload(String username, String nome, String cognome, String email, String password, String immagineProfilo) {
+    public DipendentePayload(String username, String nome, String cognome, RuoloDipendente ruolo, String email, String password, String immagineProfilo) {
         this.username = username;
         this.nome = nome;
         this.cognome = cognome;
+        this.ruolo = ruolo;
         this.email = email;
         this.password = password;
         this.immagineProfilo = immagineProfilo;
@@ -81,12 +88,21 @@ public class DipendentePayload {
         this.password = password;
     }
 
+    public RuoloDipendente getRuolo() {
+        return ruolo;
+    }
+
+    public void setRuolo(RuoloDipendente ruolo) {
+        this.ruolo = ruolo;
+    }
+
     @Override
     public String toString() {
         return "DipendentePayload{" +
                 "username='" + username + '\'' +
                 ", nome='" + nome + '\'' +
                 ", cognome='" + cognome + '\'' +
+                ", ruolo=" + ruolo +
                 ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
                 ", immagineProfilo='" + immagineProfilo + '\'' +
