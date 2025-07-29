@@ -7,20 +7,23 @@ import maurotuzzolino.u6_w2_d1_compito.enums.StatoViaggio;
 import maurotuzzolino.u6_w2_d1_compito.repositories.DipendenteRepository;
 import maurotuzzolino.u6_w2_d1_compito.repositories.PrenotazioneRepository;
 import maurotuzzolino.u6_w2_d1_compito.repositories.ViaggioRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
-import org.springframework.stereotype.Component;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.time.LocalDate;
 
 import static maurotuzzolino.u6_w2_d1_compito.enums.RuoloDipendente.AMMINISTRATORE;
 import static maurotuzzolino.u6_w2_d1_compito.enums.RuoloDipendente.DIPENDENTE_SEMPLICE;
 
-@Component
+//@Component
 public class DatabaseSeeder implements CommandLineRunner {
 
     private final DipendenteRepository dipendenteRepository;
     private final ViaggioRepository viaggioRepository;
     private final PrenotazioneRepository prenotazioneRepository;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
 
     public DatabaseSeeder(DipendenteRepository dipendenteRepository,
@@ -34,9 +37,9 @@ public class DatabaseSeeder implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
         // Dipendenti
-        Dipendente mario = new Dipendente("m.rossi", "Mario", "Rossi", AMMINISTRATORE, "mario.rossi@email.com", "password123", null);
-        Dipendente giulia = new Dipendente("g.bianchi", "Giulia", "Bianchi", DIPENDENTE_SEMPLICE, "giulia.bianchi@email.com", "password456", null);
-        Dipendente luigi = new Dipendente("l.verdi", "Luigi", "Verdi", DIPENDENTE_SEMPLICE, "luigi.verdi@email.com", "password789", null);
+        Dipendente mario = new Dipendente("m.rossi", "Mario", "Rossi", AMMINISTRATORE, "mario.rossi@email.com", passwordEncoder.encode("password123"), null);
+        Dipendente giulia = new Dipendente("g.bianchi", "Giulia", "Bianchi", DIPENDENTE_SEMPLICE, "giulia.bianchi@email.com", passwordEncoder.encode("password456"), null);
+        Dipendente luigi = new Dipendente("l.verdi", "Luigi", "Verdi", DIPENDENTE_SEMPLICE, "luigi.verdi@email.com", passwordEncoder.encode("password789"), null);
 
         dipendenteRepository.save(mario);
         dipendenteRepository.save(giulia);
